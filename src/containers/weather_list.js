@@ -2,18 +2,23 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Chart from '../components/chart';
-import GoogleMap from '../components/google_map';
+//import GoogleMap from '../components/google_map';
+
+//<GoogleMap lon={lon} lat={lat} />
 
 class WeatherList extends Component {
 	renderWeather(cityData) {
-		const temps = _.map(cityData.list.map(weather => weather.main.temp), (temp) => temp - 273);
+		const temps = _.map(cityData.list.map(weather => weather.main.temp), (temp) => temp * (9/5) - 459.67);
+		console.log(temps);
 		const humidities = cityData.list.map(weather => weather.main.humidity);
 		const pressures = cityData.list.map(weather => weather.main.pressure);
 		const { lon, lat } = cityData.city.coord;
 
 		return (
 			<tr key={cityData.city.id}>
-				<td><GoogleMap lon={lon} lat={lat} /></td>
+				<td>
+					{cityData.city.name}
+				</td>
 				<td>
 					<Chart height={120} width={180} data={temps} color='orange' units='k' />
 				</td>
