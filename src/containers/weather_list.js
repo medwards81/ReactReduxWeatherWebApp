@@ -1,15 +1,12 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Chart from '../components/chart';
-//import GoogleMap from '../components/google_map';
-
-//<GoogleMap lon={lon} lat={lat} />
+import LineChart from '../components/line_chart';
+import GoogleMap from '../components/google_map';
 
 class WeatherList extends Component {
 	renderWeather(cityData) {
 		const temps = _.map(cityData.list.map(weather => weather.main.temp), (temp) => temp * (9/5) - 459.67);
-		console.log(temps);
 		const humidities = cityData.list.map(weather => weather.main.humidity);
 		const pressures = cityData.list.map(weather => weather.main.pressure);
 		const { lon, lat } = cityData.city.coord;
@@ -17,16 +14,16 @@ class WeatherList extends Component {
 		return (
 			<tr key={cityData.city.id}>
 				<td>
-					{cityData.city.name}
+					<GoogleMap lon={lon} lat={lat} />
 				</td>
 				<td>
-					<Chart height={120} width={180} data={temps} color='orange' units='k' />
+					<LineChart data={temps} units='&deg;F' />
 				</td>
 				<td>
-					<Chart height={120} width={180} data={humidities} color='green' units='%' />
+					<LineChart data={humidities} units='%' />
 				</td>
 				<td>
-					<Chart height={120} width={180} data={pressures} color='black' units='hPa' />
+					<LineChart data={pressures} units='hPa' />
 				</td>
 			</tr>
 		);
@@ -34,11 +31,11 @@ class WeatherList extends Component {
 
 	render() {
 		return (
-			<table className="table table-hover">
+			<table className="table">
 				<thead>
 					<tr>
 						<th>City</th>
-						<th>Temperature (C)</th>
+						<th>Temperature (&deg;F)</th>
 						<th>Humidity (%)</th>
 						<th>Pressure (hPa)</th>
 					</tr>
